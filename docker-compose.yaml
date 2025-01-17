@@ -10,6 +10,10 @@ services:
     tty: true
     ports:
       - "3000:3000"
+    # Utiliza o dockerize para esperar por 20s o banco subir e somente após isso executa o docker-entrypoint.sh de app
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
+    depends_on:
+      - db
 
   db:
     image: mysql:5.7
